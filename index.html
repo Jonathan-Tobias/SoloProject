@@ -28,10 +28,11 @@
         button{
             padding: 10px 20px;
             font-size: 16px;
-            color: white;
+            color: rgb(2, 2, 2);
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            border-radius: 5px;
         }
         #buy{
             background-color: #4CAF50; 
@@ -39,12 +40,21 @@
         #sell{
             background-color: #f44336; 
         }
+        .speedButtons {
+            display: flex;
+            flex-direction: row;
+        }
     </style>
 </head>
 <body>
     <div class="main">
         <div class="chart-container">
             <canvas id="myChart"></canvas>
+        </div>
+        <div class="speedButtons">
+            <button id="normal">Normal</button>
+            <button id="fast">Fast</button>
+            <button id="veryFast">Very Fast</button>
         </div>
         <div class="info">
             <p id="money">Money: $1000</p>

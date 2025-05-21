@@ -8,8 +8,16 @@ let bankruptcyThreshold = 20;
 let money = 1000;
 let shares = 0;
 
+let updateSpeed = 1000;
+
+let intervalId = setInterval(updateStock, updateSpeed);
+
 document.getElementById("buy").addEventListener("click", buyShares);
 document.getElementById("sell").addEventListener("click", sellShares);
+document.getElementById("normal").addEventListener("click", () => update_speed(1000));
+document.getElementById("fast").addEventListener("click", () => update_speed(500));
+document.getElementById("veryFast").addEventListener("click", () => update_speed(250));
+
 
 const newsList = [
   { 
@@ -136,7 +144,11 @@ function buyShares() {
     }
 }
 
-
+function update_speed(speed) {
+    clearInterval(intervalId); // stop old interval
+    updateSpeed = speed;
+    intervalId = setInterval(updateStock, updateSpeed); // start new interval
+}
 
 function sellShares() {
     if (shares > 0) {
@@ -147,56 +159,49 @@ function sellShares() {
 
 let tick = 0;
 
-setInterval(() => {
+function updateStock() {
     let lastY = xyValues.length > 0 ? xyValues[xyValues.length - 1].y : 100; 
 
-    // Adjust random offset range by currentNewsImpact
     let minOffset = -9 + currentNewsImpact;
     let maxOffset = 10 + currentNewsImpact;
-
     let offset = Math.floor(Math.random() * (maxOffset - minOffset + 1)) + minOffset;
 
     if (impactDurationLeft > 0) {
         impactDurationLeft--;
     } else {
-        currentNewsImpact = 0; // reset impact after duration
+        currentNewsImpact = 0;
     }
 
-    let newPrice = lastY + offset;
-    newPrice = Math.min(250, Math.max(0, newPrice));
-
+    let newPrice = Math.min(250, Math.max(0, lastY + offset));
     xyValues.push({x: tick, y: newPrice});
     tick++;
 
-    if(xyValues.length > maxDataPoints) {
+    if (xyValues.length > maxDataPoints) {
         xyValues.shift();
     }
 
     chart.options.scales.xAxes[0].ticks.min = tick - maxDataPoints;
     chart.options.scales.xAxes[0].ticks.max = tick;
-
     chart.update();
 
     if (tick % 15 === 0) {
         const randomNews = newsList[Math.floor(Math.random() * newsList.length)];
-
         const newsItem = document.createElement("p");
         newsItem.textContent = randomNews.text;
         newsItem.className = "news-item";
-        document.getElementById("newsFeed").appendChild(newsItem);
+        document.getElementById("newsFeed").insertBefore(newsItem, document.getElementById("newsFeed").firstChild);
 
         currentNewsImpact = randomNews.impact;
         impactDurationLeft = randomNews.duration;
-
-
     }
 
     if (newPrice < bankruptcyThreshold) {
         shares = 0;
-        
     }
 
     document.getElementById("money").textContent = `Money: $${money.toFixed(2)}`;
     document.getElementById("shares").textContent = `Shares: ${shares} ($${(shares * newPrice).toFixed(2)})`;
-}, 1000);
+}
+
+
 

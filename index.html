@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Infinite Real-time Line Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+    <style>
+        .chart-container {
+            width: 800px;
+            margin: 20px auto;
+        }
+        #newsFeed {
+            width: 800px;
+            margin: 20px auto;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+        button{
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #buy{
+            background-color: #4CAF50; 
+        }
+        #sell{
+            background-color: #f44336; 
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="info">
+            <p id="money">Money: $1000</p>
+            <p id="shares">Shares: 0</p>
+            
+        </div>
+        <div class="buttons">
+            <button id="buy">Buy</button>
+            <button id="sell">Sell</button>
+        </div>
+
+        
+    </div>
+    
+
+    <div id="newsFeed">
+        <p>News will show up here.</p>
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
